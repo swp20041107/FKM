@@ -7,7 +7,7 @@ const router = createRouter({
       name: 'home',
       redirect:'/login'
     },
-      {
+    {
       path: '/login',
       name: 'login',
       // route level code-splitting
@@ -17,35 +17,41 @@ const router = createRouter({
     }, {
       path: '/welcome',
       name: 'welcome',
-      component: () => import('../views/Welcome.vue')
+      component: () => import('../views/Welcome.vue'),
+   
+      
     }
   ]
 })
+interface IITEM { 
+  url: string,
+  name: string,
+  
+}
 // 添加动态路由
-let arr = JSON.parse(sessionStorage.getItem('paths')||'')
-arr.forEach((item: any) => { 
-  if (item.url === '/records/7' || item.url === '/records/6') { 
-    console.log(item.url.substring(0,1))
-  }
-  console.log(item)
-  // 在welcome下面添加
-  router.addRoute('welcome', {
-    name: `${item.name}`,
-    redirect: `/records/7`,
-    path:`${item.url}`
+if (sessionStorage.getItem('paths')) { 
+  //  原路由
+  let paths = JSON.parse(sessionStorage.getItem('paths') || '')
+  paths.forEach((item: IITEM) => {
+    // 在welcome下面添加
+    router.addRoute('welcome',{
+          path: '/' + item.url,
+          name: item.name.substring(1),
+          component: () => import('../components/content/' + item.url + '.vue'),//../components${item.url}`),
+    })
   })
-})
-
+}
 // 前置路由守卫判断非法登录
 router.beforeEach((to, from, next) => {
     //判断是否有权限返回登录界面
   if (to.path === '/login') {
     next()
-  } else { 
+  }  else { 
     // 判断有没有token如果有token就继续跳，没有就跳到登录页
     let token: string = sessionStorage.getItem('user') ? JSON.parse(sessionStorage.getItem('user') || '').token : ''
     if (token) {
       next()
+    
     } else { 
       router.push({name:'login'})
     }

@@ -1,0 +1,72 @@
+{
+  "id": "3933713",
+  "name": "FKM后台管理",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "1200053",
+      "name": "师资队伍1",
+      "font_class": "shiziduiwu",
+      "unicode": "e6cc",
+      "unicode_decimal": 59084
+    },
+    {
+      "icon_id": "1311618",
+      "name": "菜单",
+      "font_class": "guanyuwomen4",
+      "unicode": "e608",
+      "unicode_decimal": 58888
+    },
+    {
+      "icon_id": "4307055",
+      "name": "课程概览",
+      "font_class": "kecheng",
+      "unicode": "e60d",
+      "unicode_decimal": 58893
+    },
+    {
+      "icon_id": "11372711",
+      "name": "图片",
+      "font_class": "tupian",
+      "unicode": "e8ba",
+      "unicode_decimal": 59578
+    },
+    {
+      "icon_id": "12331680",
+      "name": "系统管理",
+      "font_class": "xitong",
+      "unicode": "e66a",
+      "unicode_decimal": 58986
+    },
+    {
+      "icon_id": "12975013",
+      "name": "商品",
+      "font_class": "shangpin",
+      "unicode": "e634",
+      "unicode_decimal": 58932
+    },
+    {
+      "icon_id": "16050274",
+      "name": "记事本",
+      "font_class": "dashiji",
+      "unicode": "e624",
+      "unicode_decimal": 58916
+    },
+    {
+      "icon_id": "22446748",
+      "name": "会员管理",
+      "font_class": "huiyuanguanli",
+      "unicode": "e650",
+      "unicode_decimal": 58960
+    },
+    {
+      "icon_id": "18444812",
+      "name": "菜单",
+      "font_class": "caidan",
+      "unicode": "e60e",
+      "unicode_decimal": 58894
+    }
+  ]
+}

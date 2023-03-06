@@ -1,23 +1,26 @@
 <template>
   <el-col>
     <el-menu
+      :collapse="isCollapse"
+      router
       background-color="#fff"
       class="el-menu-vertical-demo"
       default-active="1"
       unique-opened
-      @open="handleOpen"
-      @close="handleClose"
     >
       <el-sub-menu v-for="item in oneMenu" :key="item.id" :index="String(item.id)">
         <template #title>
+          <i :class="['iconfont', item.ico]"></i>
           <span>{{ item.name }}</span>
         </template>
         <el-menu-item
           v-for="val in user.OWNPRIV(item.name)"
           :key="val.id"
-          :index="String(val.id)"
+          :index="val.url"
+          :class="'/' + val.url === $route.path ? 'isactive' : ''"
           @click="look(val.url)"
-          >{{ val.name }}
+        >
+          <span>{{ val.name }}</span>
         </el-menu-item>
       </el-sub-menu>
     </el-menu>
@@ -25,34 +28,41 @@
 </template>
 
 <script setup lang="ts">
-import prive from '@/untils/prive'
-
 import useUserStore from '@/stores/user'
+const $route = useRoute()
+console.log($route.path)
 const user = useUserStore()
-
+const props = defineProps({
+  isCollapse: {
+    type: Boolean,
+    default: () => true
+  }
+})
 // 一级菜单
 let oneMenu = reactive(user.power) as any[]
-// 大事记功能
-let matter = prive.getownpriv('大事记')
-console.log(matter)
 //
 const look = (url: string) => {
   console.log(url)
 }
-const handleOpen = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath)
-}
-const handleClose = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath)
-}
 </script>
 
 <style scoped lang="scss">
+i {
+  font-size: 16px;
+  margin-right: 5px;
+}
+.isactive {
+  background-color: #e6f7ff !important;
+  color: #409eff !important;
+  border-right: 3px solid #0082ff;
+  box-sizing: border-box;
+}
 .el-col {
-  @include wh(100%, 100%);
   padding: 0;
   .el-menu {
-    border: none !important;
+    height: 100%;
+    border-right: 1px solid #f1f1f1;
+
     .el-sub-menu {
       ::v-deep .el-sub-menu__title {
         width: 100% !important;

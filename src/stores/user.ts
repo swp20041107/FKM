@@ -1,6 +1,15 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import prive from '../untils/prive'
+
+interface IITEM { 
+  pid:number
+}
+interface IOWNPRIVE { 
+  id: number,
+  url: string,
+  name:string
+}
 const useUserStore = defineStore('user', {
   state: () => { 
     return {
@@ -14,7 +23,7 @@ const useUserStore = defineStore('user', {
   getters: {
     // 一级菜单，用户可以使用的功能，根据登陆账号来进行筛选
     power():Array<object> { 
-      return this.menus.filter((item:any)=> { 
+      return this.menus.filter((item:IITEM)=> { 
         return item.pid === 0
       })
     }
@@ -22,7 +31,7 @@ const useUserStore = defineStore('user', {
   actions: {
     // 通过名字获取功能
     OWNPRIV(name: string) {
-      let arr = prive.getownpriv(name) as any[]
+      let arr = prive.getownpriv(name) as IOWNPRIVE[]
       return arr
     }
   }

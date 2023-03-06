@@ -24,6 +24,7 @@
 </template>
 
 <script setup lang="ts">
+import prive from '../untils/prive'
 // pinia
 import useUserStore from '@/stores/user'
 const user = useUserStore()
@@ -44,10 +45,9 @@ const login = async () => {
     user.menus = res.data.menu
     isShow = false
     $router.push({ name: 'welcome', params: { username: '哈哈哈' } })
-    let arr: Array<object> = res.data.menu.filter((item: any) => {
-      return item.url !== '' && item.pid !== 0
-    })
-    sessionStorage.setItem('paths', JSON.stringify(arr))
+    // 处理url
+    let paths = prive.getpaths(res.data.menu)
+    sessionStorage.setItem('paths', JSON.stringify(paths))
   }
 }
 </script>

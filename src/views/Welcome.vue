@@ -3,6 +3,9 @@
     <el-container>
       <!-- 头部 -->
       <el-header>
+        <div class="welcome_header_menu" @click="changeCollapse">
+          <i class="iconfont icon-caidan"></i>
+        </div>
         <div class="welcome_header_right">
           <img src="../assets/images/logo.png" alt="" />
           <div class="welcome_header_right_title">FKM后台管理系统</div>
@@ -13,7 +16,7 @@
       <el-container>
         <!-- 左边 -->
         <el-aside>
-          <Aside></Aside>
+          <Aside :isCollapse="isCollapse"></Aside>
         </el-aside>
         <!-- 右边 -->
         <el-main> <router-view></router-view> </el-main>
@@ -28,6 +31,12 @@ const $route = useRoute()
 const $router = useRouter()
 const user = useUserState()
 
+let isCollapse = $ref(true)
+
+// 改变折叠状态
+const changeCollapse = () => {
+  isCollapse = !isCollapse
+}
 // 退出登录
 const logOut = () => {
   ElMessageBox.confirm('您是否确定退出登录', '提示', {
@@ -57,13 +66,31 @@ watchEffect(() => {
 </script>
 
 <style scoped lang="scss">
+.col {
+  color: #2295ff;
+}
 .welcome {
   @include wh(100%, 100%);
+
   // 布局容器样式
   .el-container {
     @include wh(100%, 100%);
     .el-header {
       @include wh(100%, 60px);
+      .welcome_header_menu {
+        cursor: pointer;
+        position: absolute;
+        left: 0;
+        top: 0;
+        @include wh(46px, 32px);
+        border: 1px solid #dddddd;
+        border-radius: 2px;
+        text-align: center;
+        line-height: 32px;
+        i {
+          font-size: 16px;
+        }
+      }
       .welcome_header_right {
         float: right;
         margin-right: 25px;
@@ -91,9 +118,15 @@ watchEffect(() => {
       }
     }
     .el-aside {
-      @include wh(123px, 100%);
-      border-right: 1px solid #f1f1f1;
+      max-width: 123px;
+      min-width: 64px;
+      height: 100%;
+      // @include wh(123px, 100%);
       box-sizing: border-box;
+    }
+    .el-main {
+      width: 100%;
+      height: 100%;
     }
   }
   // dialog样式

@@ -22,7 +22,7 @@ type Response<T = any> = {
   errCode:string
   errMsg: string
   // 返回的数据
-  data: T
+  data?: T
 }
 
 // 添加请求拦截器
