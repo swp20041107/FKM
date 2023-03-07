@@ -10,12 +10,16 @@ interface IOWNPRIVE {
   url: string,
   name:string
 }
+interface IState { 
+  token: string
+  menus:[]
+}
 const useUserStore = defineStore('user', {
   state: () => { 
     return {
       token: '',
       menus: [],//所有权限
-    }
+    } as IState
   },
   persist: { // 自定义持久化方式
     storage: window.sessionStorage,//存储的位置

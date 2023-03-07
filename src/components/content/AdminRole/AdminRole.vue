@@ -3,7 +3,7 @@
     <div class="adminRole_header">
       <el-button type="primary">去添加</el-button>
     </div>
-    <Table :tableColumn="tableColumn" :tableData="tableData"></Table>
+    <!-- <Table :tableColumn="tableColumn" :tableData="tableData"></Table> -->
   </div>
 </template>
 

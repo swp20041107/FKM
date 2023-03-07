@@ -6,6 +6,9 @@ const instance = axios.create({
   baseURL: 'http://www.eshareedu.cn/fkm',
   // 请求超时时间
   timeout: 5000,
+  headers: {
+    Authorization:JSON.parse(sessionStorage.getItem('user') || '').token || ''
+  }
   // ....其他配置
 })
 enum RequestEnums {
@@ -28,7 +31,7 @@ type Response<T = any> = {
 // 添加请求拦截器
 instance.interceptors.request.use(
       (config: AxiosRequestConfig | any) => {
-        const token: string = localStorage.getItem('token') || ''
+        const token: string = JSON.parse(sessionStorage.getItem('user') || '').token || ''
         return {
           ...config,
           headers: {
@@ -101,15 +104,15 @@ instance.interceptors.response.use((response: AxiosResponse) => {
 
 // 四个常用请求封装
 // post封装
-export const post = <T>(url:string,data?:object): Promise<Response<T>> => { 
-  return instance.post(url, data)
+export const post = <T>(url:string,params?:object): Promise<Response<T>> => { 
+  return instance.post(url, params)
 }
 export const get = <T>(url: string, params?: object): Promise<Response<T>> => { 
-  return instance.get(url,params)
+  return instance.get(url, { params })
 }
 export const put = <T>(url: string, params?: object): Promise<Response<T>> => { 
   return instance.put(url,params)
 }
-export const del = <T>(url: string, data?: object): Promise<Response<T>> => { 
-  return instance.delete(url,data)
+export const del = <T>(url: string, params?: object): Promise<Response<T>> => { 
+  return instance.delete(url, { params })
 }

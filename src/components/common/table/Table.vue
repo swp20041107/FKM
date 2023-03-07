@@ -16,7 +16,9 @@
         >
         </el-table-column>
         <el-table-column align="center" v-else :label="item.label">
-          <slot name="button" :data="item"></slot>
+          <template #default="scope">
+            <slot :name="item.slotName" :data="scope.row"></slot>
+          </template>
         </el-table-column>
       </template>
     </el-table>
@@ -29,6 +31,7 @@ interface ITableColumn {
   prop: string
   label: string
   isSlot: boolean
+  slotName: string
 }
 const props = defineProps({
   tableColumn: {

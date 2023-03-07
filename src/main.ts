@@ -8,6 +8,8 @@ import './assets/css/index.css'
 import 'normalize.css/normalize.css'
 // 引入图标
 import './assets/css/fontsize/iconfont.css'
+
+
 const app = createApp(App)
 
 // 将api挂载到全局

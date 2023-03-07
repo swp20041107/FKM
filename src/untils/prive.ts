@@ -32,7 +32,7 @@ const getpaths = (data:any) => {
     // 合并数组 处理完成的数组
     let detailArr = arr1.concat(arr2)
     detailArr.forEach((item: any):void => {
-      item.url = item.url.substring(1, 2).toUpperCase() + item.url.substring(2) 
+      item.url = '/'+ item.url.substring(1, 2).toUpperCase() + item.url.substring(2) 
     })
   return detailArr
 }

@@ -13,7 +13,7 @@
           <el-input v-model="username"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-input v-model="pass"></el-input>
+          <el-input v-model="pass" @keydown.enter="login"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="danger" @click="login">{{ isShow ? '登陆中...' : '登录' }}</el-button>

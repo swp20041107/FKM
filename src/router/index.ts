@@ -17,9 +17,15 @@ const router = createRouter({
     }, {
       path: '/welcome',
       name: 'welcome',
+       redirect:'/Records7',
       component: () => import('../views/Welcome.vue'),
-   
-      
+      children: [
+        {
+          path: '/Records7',
+          name: 'Records7',
+          component: () => import('../components/content/Records7/Records7.vue'),
+        }
+      ]
     }
   ]
 })
@@ -33,11 +39,13 @@ if (sessionStorage.getItem('paths')) {
   //  原路由
   let paths = JSON.parse(sessionStorage.getItem('paths') || '')
   paths.forEach((item: IITEM) => {
+    let name = item.url.substring(1)
+    // console.log('../components/content/'+ name + item.url + '.vue')
     // 在welcome下面添加
     router.addRoute('welcome',{
-          path: '/' + item.url,
-          name: item.name.substring(1),
-          component: () => import('../components/content/' + item.url + '.vue'),//../components${item.url}`),
+      name: item.name.substring(1),
+      path: item.url,
+      component: () => import('../components/content/'+ name + item.url + '.vue'),
     })
   })
 }

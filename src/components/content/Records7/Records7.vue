@@ -8,38 +8,37 @@
       <el-button type="primary">查询</el-button>
       <el-button type="primary">去添加</el-button>
     </div>
-    <Table :tableColumn="tableColumn"></Table>
+    <Table :tableColumn="data.tableColumn"></Table>
   </div>
 </template>
 
 <script setup lang="ts">
 let input = ref('')
-interface ITableColumn {
-  id: number
-  label: string
-}
-const tableColumn: ITableColumn[] = reactive([
-  {
-    id: 0,
-    label: 'id'
-  },
-  {
-    id: 1,
-    label: '描述'
-  },
-  {
-    id: 2,
-    label: '图片'
-  },
-  {
-    id: 3,
-    label: '内容'
-  },
-  {
-    id: 4,
-    label: '操作'
-  }
-])
+
+let data: any = reactive({
+  tableColumn: [
+    {
+      id: 0,
+      label: 'id'
+    },
+    {
+      id: 1,
+      label: '描述'
+    },
+    {
+      id: 2,
+      label: '图片'
+    },
+    {
+      id: 3,
+      label: '内容'
+    },
+    {
+      id: 4,
+      label: '操作'
+    }
+  ]
+})
 </script>
 
 <style scoped lang="scss">

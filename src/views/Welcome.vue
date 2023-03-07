@@ -26,16 +26,14 @@
 </template>
 
 <script setup lang="ts">
-import useUserState from '../stores/user'
+import useCommonState from '../stores/common'
 const $route = useRoute()
 const $router = useRouter()
-const user = useUserState()
-
-let isCollapse = $ref(true)
+const { isCollapse } = storeToRefs(useCommonState())
 
 // 改变折叠状态
 const changeCollapse = () => {
-  isCollapse = !isCollapse
+  isCollapse.value = !isCollapse.value
 }
 // 退出登录
 const logOut = () => {

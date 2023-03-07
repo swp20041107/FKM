@@ -14,7 +14,7 @@ export default defineConfig({
       reactivityTransform: true// 开启ref转换
     }),
     AutoImport({
-      imports: ["vue", "vue-router"], //自动导入vue和router不需要每次导入
+      imports: ["vue", "vue-router","pinia"], //自动导入vue和router不需要每次导入
       resolvers: [ElementPlusResolver()],
     }),
     Components({

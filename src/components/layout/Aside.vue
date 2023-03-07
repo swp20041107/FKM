@@ -1,11 +1,11 @@
 <template>
   <el-col>
     <el-menu
-      :collapse="isCollapse"
+      :collapse="common.isCollapse"
       router
       background-color="#fff"
       class="el-menu-vertical-demo"
-      default-active="1"
+      :default-active="$route.path"
       unique-opened
     >
       <el-sub-menu v-for="item in oneMenu" :key="item.id" :index="String(item.id)">
@@ -17,7 +17,7 @@
           v-for="val in user.OWNPRIV(item.name)"
           :key="val.id"
           :index="val.url"
-          :class="'/' + val.url === $route.path ? 'isactive' : ''"
+          :class="val.url === $route.path ? 'isactive' : ''"
           @click="look(val.url)"
         >
           <span>{{ val.name }}</span>
@@ -29,15 +29,10 @@
 
 <script setup lang="ts">
 import useUserStore from '@/stores/user'
+import useCommonStore from '@/stores/common'
 const $route = useRoute()
-console.log($route.path)
 const user = useUserStore()
-const props = defineProps({
-  isCollapse: {
-    type: Boolean,
-    default: () => true
-  }
-})
+const common = useCommonStore()
 // 一级菜单
 let oneMenu = reactive(user.power) as any[]
 //
