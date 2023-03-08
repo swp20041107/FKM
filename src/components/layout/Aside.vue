@@ -59,7 +59,7 @@ i {
     border-right: 1px solid #f1f1f1;
 
     .el-sub-menu {
-      ::v-deep .el-sub-menu__title {
+      :deep(.el-sub-menu__title) {
         width: 100% !important;
         height: 60px !important;
         padding: 0 !important;
@@ -74,7 +74,7 @@ i {
           color: #000;
         }
       }
-      ::v-deep ul.el-menu {
+      :deep(ul.el-menu) {
         background-color: #fafafa !important;
         overflow: hidden;
         li.el-menu-item {

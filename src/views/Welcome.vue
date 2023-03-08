@@ -57,7 +57,6 @@ const logOut = () => {
       })
     })
 }
-// console.log(user.)
 watchEffect(() => {
   console.log($route)
 })
@@ -128,7 +127,7 @@ watchEffect(() => {
     }
   }
   // dialog样式
-  ::v-deep .el-dialog__body {
+  :deep(.el-dialog__body) {
     text-align: center !important;
   }
 }

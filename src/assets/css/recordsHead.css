@@ -1,0 +1,29 @@
+.revise {
+  color: #0878ff;
+  margin-right: 37px;
+  cursor: pointer;
+}
+
+.dele {
+  color: #ff3a3a;
+  cursor: pointer;
+}
+
+.records_header {
+  margin-top: 30px;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.records_header .el-input {
+  width: 200px;
+  height: 32px;
+}
+
+.records_header .el-button {
+  margin-left: 20px;
+}
+
+.records_header .el-button:last-of-type {
+  float: right;
+}

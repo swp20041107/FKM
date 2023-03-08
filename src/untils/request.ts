@@ -6,9 +6,6 @@ const instance = axios.create({
   baseURL: 'http://www.eshareedu.cn/fkm',
   // 请求超时时间
   timeout: 5000,
-  headers: {
-    Authorization:JSON.parse(sessionStorage.getItem('user') || '').token || ''
-  }
   // ....其他配置
 })
 enum RequestEnums {
@@ -30,8 +27,8 @@ type Response<T = any> = {
 
 // 添加请求拦截器
 instance.interceptors.request.use(
-      (config: AxiosRequestConfig | any) => {
-        const token: string = JSON.parse(sessionStorage.getItem('user') || '').token || ''
+  (config: AxiosRequestConfig | any) => {
+    let token = sessionStorage.getItem('token')||''
         return {
           ...config,
           headers: {

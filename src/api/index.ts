@@ -1,7 +1,7 @@
 import { post, get } from '../untils/request'
 import type { loginTypes, loginData } from '../types/login-type'
 import type { IAdministratorrole } from '../types/admin-type'
-import type { IRecordsType,IRecordsData,IAddRecordType } from '@/types/records-type'
+import type { IRecordsType,IRecordsData,IAddRecordType,IDeleRecordsType } from '@/types/records-type'
 // 登录
 class login { 
   static Login(data:loginTypes){ 
@@ -16,11 +16,17 @@ class admin {
 }
 // 大事记
 class record { 
+  // 获取列表
   static RecordsList(data:IRecordsType) { 
     return get<IRecordsData>('/api/records/list',data)
   }
+  // 添加数据
   static addRecords(data:IAddRecordType) { 
     return post('/api/records/add',data)
+  }
+  // 删除数据
+  static deleRecords(data:IDeleRecordsType) { 
+    return get('/api/records/delete',data)
   }
 }
 export default {

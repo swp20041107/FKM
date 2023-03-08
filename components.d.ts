@@ -10,7 +10,7 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     7: typeof import('./src/components/records/7.vue')['default']
-    A: typeof import('./src/components/common/RecordsDrawer/a.vue')['default']
+    A: typeof import('./src/components/A.vue')['default']
     AdminRole: typeof import('./src/components/content/AdminRole/AdminRole.vue')['default']
     Aside: typeof import('./src/components/layout/Aside.vue')['default']
     Courses: typeof import('./src/components/content/Courses/Courses.vue')['default']
@@ -46,6 +46,10 @@ declare module '@vue/runtime-core' {
     Pagination: typeof import('./src/components/common/pagination/Pagination.vue')['default']
     Records1: typeof import('./src/components/content/Records1/Records1.vue')['default']
     Records2: typeof import('./src/components/content/Records2/Records2.vue')['default']
+    Records3: typeof import('./src/components/content/Records3/Records3.vue')['default']
+    Records4: typeof import('./src/components/content/Records4/Records4.vue')['default']
+    Records5: typeof import('./src/components/content/Records5/Records5.vue')['default']
+    Records6: typeof import('./src/components/content/Records6/Records6.vue')['default']
     Records7: typeof import('./src/components/content/Records7/Records7.vue')['default']
     RecordsDrawer: typeof import('./src/components/common/RecordsDrawer/RecordsDrawer.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

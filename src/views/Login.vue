@@ -31,6 +31,7 @@ const user = useUserStore()
 // 封装的api
 const proxy = getCurrentInstance()?.proxy
 const api: any = proxy?.$api
+
 // 路由跳转
 const $router = useRouter()
 let username: string = $ref('')
@@ -41,10 +42,11 @@ const login = async () => {
   let res = await api.login.Login({ username: username, pass: pass })
   if (res.errCode === 10000) {
     // token存入pinia
-    user.token = res.data.token
+    // user.token = res.data.token
+    sessionStorage.setItem('token', res.data.token)
     user.menus = res.data.menu
     isShow = false
-    $router.push({ name: 'welcome', params: { username: '哈哈哈' } })
+    $router.push({ name: 'welcome' })
     // 处理url
     let paths = prive.getpaths(res.data.menu)
     sessionStorage.setItem('paths', JSON.stringify(paths))
@@ -85,7 +87,7 @@ const login = async () => {
       margin-top: 40px;
       .el-form-item {
         margin-bottom: 37px;
-        ::v-deep .is-focus {
+        :deep(.is-focus) {
           box-shadow: 0 0 0 1px #fe4366 inset !important;
         }
         button {

@@ -17,7 +17,7 @@ const router = createRouter({
     }, {
       path: '/welcome',
       name: 'welcome',
-       redirect:'/Records7',
+      redirect:'/Records7',
       component: () => import('../views/Welcome.vue'),
       children: [
         {
@@ -34,32 +34,32 @@ interface IITEM {
   name: string,
   
 }
-// 添加动态路由
-if (sessionStorage.getItem('paths')) { 
-  //  原路由
-  let paths = JSON.parse(sessionStorage.getItem('paths') || '')
-  paths.forEach((item: IITEM) => {
-    let name = item.url.substring(1)
-    // console.log('../components/content/'+ name + item.url + '.vue')
-    // 在welcome下面添加
-    router.addRoute('welcome',{
-      name: item.name.substring(1),
-      path: item.url,
-      component: () => import('../components/content/'+ name + item.url + '.vue'),
-    })
-  })
-}
+
 // 前置路由守卫判断非法登录
 router.beforeEach((to, from, next) => {
     //判断是否有权限返回登录界面
   if (to.path === '/login') {
     next()
-  }  else { 
+  } else { 
     // 判断有没有token如果有token就继续跳，没有就跳到登录页
-    let token: string = sessionStorage.getItem('user') ? JSON.parse(sessionStorage.getItem('user') || '').token : ''
+    let token: string = sessionStorage.getItem('token') || ''
     if (token) {
       next()
-    
+      // 添加动态路由
+      //  原路由
+      let paths = JSON.parse(sessionStorage.getItem('paths') || '')
+      paths.forEach((item: IITEM) => {
+        let name = item.url.substring(1)
+        // 使用vite创建的项目添加动态路由时必须要使用glod导入方式
+        const modules = import.meta.glob('../components/*/*/*.vue')
+        let url = '../components/content/' + name + item.url + '.vue'
+        // 在welcome下面添加
+        router.addRoute('welcome',{
+          name: item.name.substring(1),
+          path: item.url,
+          component: modules[url],
+        })
+      })
     } else { 
       router.push({name:'login'})
     }

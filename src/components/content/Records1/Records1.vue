@@ -1,7 +1,7 @@
 <template>
   <div class="records1">
     <!-- 头部start -->
-    <div class="records1_header">
+    <div class="records_header">
       <!-- 搜索 -->
       <el-input
         v-model="query.key"
@@ -13,6 +13,7 @@
       <el-button type="primary" @click="getTable">查询</el-button>
       <el-button type="primary" @click="add">去添加</el-button>
     </div>
+    <!-- 头部end -->
 
     <!-- 表格start -->
     <Table v-if="flag" :tableData="data.tableData" :tableColumn="data.tableColumn">
@@ -26,7 +27,7 @@
       </template>
       <template #button="val">
         <span class="slot_button revise" @click="revise(val.data)">编辑</span>
-        <span class="slot_button dele">删除</span>
+        <span class="slot_button dele" @click="dele(val.data)">删除</span>
       </template>
     </Table>
     <!-- 表格end -->
@@ -40,71 +41,59 @@
     ></Pagination>
 
     <!-- 添加或修改 -->
-    <RecordsDrawer :typeid="1" @done="done" :drawer="data.drawer"></RecordsDrawer>
+    <RecordsDrawer
+      @getTable="getTable"
+      :reviseData="data.reviseData"
+      :typeid="1"
+      @clearRevise="clearRevise"
+    ></RecordsDrawer>
   </div>
 </template>
 
 <script setup lang="ts">
+import useRecordData from '@/hooks/useRecordData'
+import useRecordStore from '@/stores/record' //通过抽屉控制pinia
+let { isDrawer } = storeToRefs(useRecordStore())
 // 全局
 const proxy = getCurrentInstance()?.proxy
 const api: any = proxy?.$api
 
-let IMAGE_URL = import.meta.env.VITE_IMAGE_URL
+const IMAGE_URL = import.meta.env.VITE_IMAGE_URL
 // 数据
 //#region
 let data: any = reactive({
-  drawer: false,
   tableData: [],
   counts: 0,
-  tableColumn: [
-    {
-      id: 0,
-      prop: 'id',
-      label: 'id'
-    },
-    {
-      id: 1,
-      prop: 'title',
-      isSlot: false,
-      label: '标题'
-    },
-    {
-      id: 2,
-      prop: 'comment',
-      isSlot: false,
-      label: '描述'
-    },
-    {
-      id: 3,
-      prop: 'photo',
-      isSlot: true,
-      label: '图片',
-      slotName: 'img'
-    },
-    {
-      id: 4,
-      prop: 'content',
-      isSlot: false,
-      label: '内容'
-    },
-    {
-      id: 5,
-      prop: '',
-      isSlot: true,
-      label: '操作',
-      slotName: 'button'
-    }
-  ]
+  reviseData: {},
+  tableColumn: []
 })
 // 传参
 let query = reactive({
   key: '',
-  typeid: 0,
+  typeid: 1,
   page: 1,
   psize: 5
 })
 //#endregion
+const add = () => {
+  isDrawer.value = true
+  console.log(data.reviseData.id)
+}
+// 给表格列表赋值
+data.tableColumn = useRecordData.tableColumn
 
+// 获取数据
+//#region
+// 判断有无数据
+let flag = $ref(false)
+const getTable = async () => {
+  let res = await useRecordData.getTable(query)
+  data.tableData = res.tableData
+  data.counts = res.counts
+  flag = true
+}
+getTable()
+//#endregion
 // 更改页数
 //#region
 const changePage = (val: number) => {
@@ -117,61 +106,56 @@ const changePsize = (val: number) => {
 }
 //#endregion
 
-// 打开关闭添加或修改
+// 删除
 //#region
-const add = () => {
-  data.drawer = true
+interface IDeleValType {
+  id: number
 }
-// 关闭添加或修改
-const done = (val: boolean) => {
-  data.drawer = val
-  getTable()
+const dele = (val: IDeleValType) => {
+  ElMessageBox.confirm('请问您确定要删除当前数据吗?', '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
+  })
+    .then(async () => {
+      let res = await api.record.deleRecords({ id: val.id })
+      if (res.errCode === 10000) {
+        ElMessage.success('删除成功')
+      } else {
+        ElMessage.error(res.errMsg)
+      }
+      getTable()
+    })
+    .catch(() => {
+      ElMessage({
+        type: 'info',
+        message: '已取消操作'
+      })
+    })
 }
 //#endregion
-// 判断有无数据
-let flag = $ref(false)
-// 获取数据
-//#region
-const getTable = async () => {
-  let res = await api.record.RecordsList(query)
-  flag = true
-  data.tableData = res.data.list
-  data.counts = res.data.counts
-}
-getTable()
-//#endregion
-
 // 修改
-const revise = (val: object) => {
-  console.log(val)
+const revise = (val: any) => {
+  isDrawer.value = true //抽屉显示
+  data.reviseData = val
+  if (val.pictures === null && val.videos == null) {
+    data.reviseData.pictures = []
+    data.reviseData.videos = []
+  } else if (val.videos === null) {
+    data.reviseData.videos = []
+  } else if (val.pictures === null) {
+    data.reviseData.pictures = []
+  }
+}
+// 清空修改
+const clearRevise = (val: object) => {
+  data.reviseData = val
 }
 </script>
 
 <style scoped lang="scss">
+@import url('@/assets/css/recordsHead.css');
 .records1 {
   @include wh(100%, 100%);
-  .revise {
-    color: #0878ff;
-    margin-right: 37px;
-    cursor: pointer;
-  }
-  .dele {
-    color: #ff3a3a;
-    cursor: pointer;
-  }
-  &_header {
-    margin-top: 30px;
-    width: 100%;
-    margin-bottom: 20px;
-    .el-input {
-      @include wh(200px, 32px);
-    }
-    .el-button {
-      margin-left: 20px;
-      &:last-of-type {
-        float: right;
-      }
-    }
-  }
 }
 </style>

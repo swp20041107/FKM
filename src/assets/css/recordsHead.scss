@@ -1,0 +1,27 @@
+@mixin wh($width,$height){
+  width:$width;
+  height:$height;
+}
+.revise {
+    color: #0878ff;
+    margin-right: 37px;
+    cursor: pointer;
+}
+.dele {
+  color: #ff3a3a;
+  cursor: pointer;
+}
+.records_header {
+    margin-top: 30px;
+    width: 100%;
+    margin-bottom: 20px;
+    .el-input {
+      @include wh(200px, 32px);
+    }
+    .el-button {
+      margin-left: 20px;
+      &:last-of-type {
+        float: right;
+      }
+    }
+}
