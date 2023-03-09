@@ -40,6 +40,8 @@ let isShow: boolean = $ref(false)
 const login = async () => {
   isShow = true
   let res = await api.login.Login({ username: username, pass: pass })
+  console.log(res)
+
   if (res.errCode === 10000) {
     // token存入pinia
     // user.token = res.data.token

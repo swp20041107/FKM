@@ -1,7 +1,12 @@
 <template>
   <!-- 大事记添加修改 抽屉效果 -->
   <div class="recordsDrawer">
-    <el-drawer v-model="isDrawer" :before-close="handleClose" title="添加" size="90%">
+    <el-drawer
+      v-model="isDrawer"
+      :before-close="handleClose"
+      :title="props.reviseData.id ? '编辑' : '添加'"
+      size="90%"
+    >
       <!-- 表单start -->
       <el-form
         ref="drawerFormRef"
@@ -109,6 +114,8 @@ const proxy = getCurrentInstance()?.proxy //api
 const api: any = proxy?.$api //api
 // 上传图片基础路径
 let UPLOAD_URL = import.meta.env.VITE_UPLOAD_URL
+// 图片显示基础路径
+let IMAGE_URL = import.meta.env.VITE_IMAGE_URL
 // 上传图片请求头
 let headers = {
   Authorization: sessionStorage.getItem('token') || ''
@@ -143,13 +150,10 @@ watchEffect(() => {
     })
   }
 })
-watchEffect(() => {
-  // 如果有修改数据,就进行修改功能,否则就将id赋值为0进行添加功能
-  props.reviseData.id ? (drawerForm = props.reviseData as IAddRecordType) : false
-})
+
 // logo图片只能一张
 //#region
-let logoList = $ref<UploadUserFile[]>([])
+let logoList: any = $ref<UploadUserFile[]>([])
 const logoSuccess: UploadProps['onSuccess'] = (e) => {
   drawerForm.photo = e.data
 }
@@ -157,7 +161,16 @@ const logoExceed: UploadProps['onExceed'] = (e) => {
   ElMessage.warning('最多只能上传一张图片')
 }
 //#endregion
-
+watchEffect(() => {
+  // 如果有修改数据,就进行修改功能,否则就将id赋值为0进行添加功能
+  props.reviseData.id ? (drawerForm = props.reviseData as IAddRecordType) : false
+  if (props.reviseData.id) {
+    let obj = {
+      url: IMAGE_URL + props.reviseData.photo
+    }
+    logoList.push(obj)
+  }
+})
 //pictures上传图片
 //#region
 // pictures接口
@@ -173,7 +186,7 @@ let dataImgs: IObj = reactive({
 let fileList = $ref<UploadUserFile[]>([])
 // 上传多张成功触发
 const handleSuccess: UploadProps['onSuccess'] = (e) => {
-  let obj: IObj = {}
+  let obj: IObj = reactive({})
   dataImgs.file = e.data
   obj.oldfilename = e.data
   obj.filename = e.data
@@ -187,8 +200,8 @@ const videoLists = $ref<UploadUserFile[]>([])
 const videoSuccess: UploadProps['onSuccess'] = (e) => {
   let response = videoLists[0].response as any
   let obj: IObj = {}
-  obj.oldfilename = response.data
-  obj.filename = response.data
+  obj.oldfilename = e.data
+  obj.filename = e.data
   drawerForm.videos?.push(obj)
 }
 //#endregion

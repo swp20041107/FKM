@@ -41,20 +41,15 @@ interface IITEM {
   name: string,
   
 }
-
 // 前置路由守卫判断非法登录
 router.beforeEach((to, from, next) => {
     //判断是否有权限返回登录界面
   if (to.path === '/login') {
     next()
   } else { 
-    // 判断有没有token如果有token就继续跳，没有就跳到登录页
     let token: string = sessionStorage.getItem('token') || ''
+    // 判断有没有token如果有token就继续跳，没有就跳到登录页
     if (token) {
-        // 登录过就不能访问登录界面，需要中断这一次路由守卫，执行下一次路由守卫，并且下一次守卫的to是主页'
-      if (to.path === '/login') {
-        next({ path: '/' })
-      }
       //利用pinia刷新页面后数据丢失的特性来解决刷新页面动态路由消失的问题      
       if (user.paths.length === 0) {
         // 添加动态路由

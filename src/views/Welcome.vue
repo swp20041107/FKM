@@ -44,6 +44,8 @@ const logOut = () => {
   })
     .then(() => {
       sessionStorage.removeItem('user')
+      sessionStorage.removeItem('token')
+      sessionStorage.removeItem('paths')
       $router.push({ name: 'login' })
       ElMessage({
         type: 'success',
@@ -111,6 +113,7 @@ watchEffect(() => {
           border: 1px solid #dddddd;
           box-sizing: border-box;
           text-align: center;
+          cursor: pointer;
         }
       }
     }

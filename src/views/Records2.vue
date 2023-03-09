@@ -1,4 +1,5 @@
 <template>
+  <!-- 活动管理 -->
   <div class="records2">
     <!-- 头部start -->
     <div class="records_header">
@@ -52,9 +53,7 @@
 import useRecordData from '@/hooks/useRecordData'
 import useRecordStore from '@/stores/record' //通过抽屉控制pinia
 const { isDrawer } = storeToRefs(useRecordStore())
-// 全局
-const proxy = getCurrentInstance()?.proxy
-const api: any = proxy?.$api
+
 const IMAGE_URL = import.meta.env.VITE_IMAGE_URL
 let data: any = reactive({
   reviseData: {},
@@ -126,7 +125,7 @@ const clearRevise = (val: object) => {
 </script>
 
 <style scoped lang="scss">
-@import url('@/assets/css/recordsHead.css');
+@import url('@/assets/css/commonHead.css');
 .records2 {
   @include wh(100%, 100%);
 }

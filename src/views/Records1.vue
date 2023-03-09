@@ -1,4 +1,5 @@
 <template>
+  <!-- 作品管理 -->
   <div class="records1">
     <!-- 头部start -->
     <div class="records_header">
@@ -54,10 +55,6 @@
 import useRecordData from '@/hooks/useRecordData'
 import useRecordStore from '@/stores/record' //通过抽屉控制pinia
 let { isDrawer } = storeToRefs(useRecordStore())
-// 全局
-const proxy = getCurrentInstance()?.proxy
-const api: any = proxy?.$api
-
 const IMAGE_URL = import.meta.env.VITE_IMAGE_URL
 // 数据
 //#region
@@ -81,7 +78,6 @@ const add = () => {
 }
 // 给表格列表赋值
 data.tableColumn = useRecordData.tableColumn
-
 // 获取数据
 //#region
 // 判断有无数据
@@ -91,6 +87,7 @@ const getTable = async () => {
   data.tableData = res.tableData
   data.counts = res.counts
   flag = true
+  console.log(res)
 }
 getTable()
 //#endregion
@@ -105,6 +102,8 @@ const changePsize = (val: number) => {
   getTable()
 }
 //#endregion
+// 删除
+//#region
 interface IDeleValType {
   id: number
 }
@@ -113,7 +112,7 @@ const dele = async (val: IDeleValType) => {
   data.tableData = res?.tableData
   data.counts = res?.counts
 }
-
+//#endregion
 // 修改
 const revise = (val: any) => {
   isDrawer.value = true //抽屉显示
@@ -134,7 +133,7 @@ const clearRevise = (val: object) => {
 </script>
 
 <style scoped lang="scss">
-@import url('@/assets/css/recordsHead.css');
+@import url('@/assets/css/commonHead.css');
 .records1 {
   @include wh(100%, 100%);
 }
