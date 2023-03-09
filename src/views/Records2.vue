@@ -97,27 +97,13 @@ const changePsize = (val: number) => {
 interface IDeleValType {
   id: number
 }
-const dele = (val: IDeleValType) => {
-  ElMessageBox.confirm('请问您确定要删除当前数据吗?', '提示', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
-    type: 'warning'
-  })
-    .then(async () => {
-      let res = await api.record.deleRecords({ id: val.id })
-      if (res.errCode === 10000) {
-        ElMessage.success('删除成功')
-      } else {
-        ElMessage.error(res.errMsg)
-      }
-      getTable()
-    })
-    .catch(() => {
-      ElMessage({
-        type: 'info',
-        message: '已取消操作'
-      })
-    })
+const dele = async (val: IDeleValType) => {
+  let res = await useRecordData.dele(val.id, query)
+  if (res !== undefined) {
+    //删除的时候才更新页面不删除不更新
+    data.tableData = res?.tableData
+    data.counts = res?.counts
+  }
 }
 //#endregion
 // 修改
