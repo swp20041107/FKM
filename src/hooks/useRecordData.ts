@@ -1,5 +1,6 @@
 import api from '@/api/index'
-import type { IRecordsType } from '@/types/records-type'
+import type { IRecordsType,IRecordsData } from '@/types/records-type'
+import type { Response } from '@/types/common-type'
 /**
  * 
  * @getTable 获取大事记表格数据
@@ -58,10 +59,10 @@ async function getTable(query: IRecordsType) {
     tableData: [],
     counts:0
   })
-  let res: any = await api.record.RecordsList(query)
+  let res: Response<IRecordsData> = await api.record.RecordsList(query)
   if (res.errCode === 10000) {
-    data.tableData = res.data.list
-    data.counts = res.data.counts
+    data.tableData = res.data?.list
+    data.counts = res.data?.counts
   } else { 
     ElMessage.error(res.errMsg)
   }

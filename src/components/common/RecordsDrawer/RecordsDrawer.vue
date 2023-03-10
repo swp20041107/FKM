@@ -164,12 +164,6 @@ const logoExceed: UploadProps['onExceed'] = (e) => {
 watchEffect(() => {
   // 如果有修改数据,就进行修改功能,否则就将id赋值为0进行添加功能
   props.reviseData.id ? (drawerForm = props.reviseData as IAddRecordType) : false
-  if (props.reviseData.id) {
-    let obj = {
-      url: IMAGE_URL + props.reviseData.photo
-    }
-    logoList.push(obj)
-  }
 })
 //pictures上传图片
 //#region

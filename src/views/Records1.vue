@@ -17,7 +17,7 @@
     <!-- 头部end -->
 
     <!-- 表格start -->
-    <Table v-if="flag" :tableData="data.tableData" :tableColumn="data.tableColumn">
+    <Table :loading="data.loading" :tableData="data.tableData" :tableColumn="data.tableColumn">
       <template #img="val">
         <el-image
           lazy
@@ -56,9 +56,11 @@ import useRecordData from '@/hooks/useRecordData'
 import useRecordStore from '@/stores/record' //通过抽屉控制pinia
 let { isDrawer } = storeToRefs(useRecordStore())
 const IMAGE_URL = import.meta.env.VITE_IMAGE_URL
+
 // 数据
 //#region
 let data: any = reactive({
+  loading: true,
   tableData: [],
   counts: 0,
   reviseData: {},
@@ -72,25 +74,27 @@ let query = reactive({
   psize: 5
 })
 //#endregion
-const add = () => {
-  isDrawer.value = true
-  console.log(data.reviseData.id)
-}
+
 // 给表格列表赋值
 data.tableColumn = useRecordData.tableColumn
+
 // 获取数据
 //#region
 // 判断有无数据
-let flag = $ref(false)
 const getTable = async () => {
+  data.loading = true
   let res = await useRecordData.getTable(query)
   data.tableData = res.tableData
   data.counts = res.counts
-  flag = true
-  console.log(res)
+  data.loading = false
 }
 getTable()
 //#endregion
+
+const add = () => {
+  isDrawer.value = true
+}
+
 // 更改页数
 //#region
 const changePage = (val: number) => {
@@ -113,6 +117,7 @@ const dele = async (val: IDeleValType) => {
   data.counts = res?.counts
 }
 //#endregion
+
 // 修改
 const revise = (val: any) => {
   isDrawer.value = true //抽屉显示

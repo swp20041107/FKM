@@ -8,12 +8,12 @@
         <span>密码登录</span>
       </div>
       <!-- 表单 -->
-      <el-form>
+      <el-form :model="data.query">
         <el-form-item>
-          <el-input v-model="username"></el-input>
+          <el-input v-model="data.query.username"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-input v-model="pass" @keydown.enter="login"></el-input>
+          <el-input type="password" v-model="data.query.pass" @keydown.enter="login"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="danger" @click="login">{{ isShow ? '登陆中...' : '登录' }}</el-button>
@@ -24,36 +24,44 @@
 </template>
 
 <script setup lang="ts">
+import api from '@/api/index'
+import { debounce } from '@/untils/common'
 import prive from '../untils/prive'
 // pinia
 import useUserStore from '@/stores/user'
 const user = useUserStore()
-// 封装的api
-const proxy = getCurrentInstance()?.proxy
-const api: any = proxy?.$api
 
 // 路由跳转
 const $router = useRouter()
-let username: string = $ref('')
-let pass: string = $ref('')
-let isShow: boolean = $ref(false)
-const login = async () => {
-  isShow = true
-  let res = await api.login.Login({ username: username, pass: pass })
-  console.log(res)
-
-  if (res.errCode === 10000) {
-    // token存入pinia
-    // user.token = res.data.token
-    sessionStorage.setItem('token', res.data.token)
-    user.menus = res.data.menu
-    isShow = false
-    $router.push({ name: 'welcome' })
-    // 处理url
-    let paths = prive.getpaths(res.data.menu)
-    sessionStorage.setItem('paths', JSON.stringify(paths))
+let data = reactive({
+  query: {
+    username: '',
+    pass: ''
   }
+})
+
+//#region
+let isShow: boolean = $ref(false)
+const login = () => {
+  debounce(async () => {
+    isShow = true
+    let res: any = await api.login.Login(data.query)
+    if (res.errCode === 10000) {
+      // token存入pinia
+      // user.token = res.data.token
+      sessionStorage.setItem('token', res.data.token)
+      user.menus = res.data.menu
+      $router.push({ name: 'welcome' })
+      // 处理url
+      let paths = prive.getpaths(res.data.menu)
+      sessionStorage.setItem('paths', JSON.stringify(paths))
+    } else {
+      ElMessage.error(res.errMsg)
+    }
+    isShow = false
+  })
 }
+//#endregion
 </script>
 
 <style scoped lang="scss">

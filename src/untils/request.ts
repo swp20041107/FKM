@@ -1,5 +1,6 @@
 //引入axios
-import axios,{AxiosError, type AxiosRequestConfig,type AxiosResponse} from 'axios'
+import axios, { AxiosError, type AxiosRequestConfig, type AxiosResponse } from 'axios'
+import type { Response} from '@/types/common-type'
 //使用指定配置创建axios实例
 const instance = axios.create({
   // 基础路径
@@ -13,16 +14,6 @@ enum RequestEnums {
   OVERDUE = 600, // 登录失效
   FAIL = 999, // 请求失败
   SUCCESS = 10000 // 请求成功
-}
-
-// 后台给我们的数据类型如下
-// 泛型T指定了Response类型中result的类型，默认为any
-type Response<T = any> = {
-  // 描述
-  errCode:string
-  errMsg: string
-  // 返回的数据
-  data?: T
 }
 
 // 添加请求拦截器
@@ -54,10 +45,10 @@ instance.interceptors.response.use((response: AxiosResponse) => {
           return Promise.reject(data)
         }
         // 全局错误信息拦截（防止下载文件得时候返回数据流，没有code，直接报错）
-        if (data.errCode && data.errCode !== RequestEnums.SUCCESS) {
-          ElMessage.error(data.errMsg) // 此处也可以使用组件提示报错信息
-          return Promise.reject(data)
-        }
+        // if (data.errCode && data.errCode !== RequestEnums.SUCCESS) {
+        //   ElMessage.error(data.errMsg) // 此处也可以使用组件提示报错信息
+        //   return Promise.reject(data)
+        // }
         return data
       },
       (error: AxiosError) => {

@@ -24,17 +24,14 @@ const props = defineProps({
     default: () => 0
   }
 })
-const pageSize4 = $ref(100)
 const small = $ref(false)
 const disabled = $ref(false)
 const background = $ref(false)
 const handleSizeChange = (val: number) => {
   emit('changePsize', val)
-  console.log(`${val} items per page`)
 }
 const handleCurrentChange = (val: number) => {
   emit('changePage', val)
-  console.log(`current page: ${val}`)
 }
 </script>
 

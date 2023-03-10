@@ -1,6 +1,7 @@
 <template>
   <div>
     <el-table
+      v-loading="loading"
       ref="multipleTableRef"
       :data="tableData"
       style="width: 100%"
@@ -28,10 +29,10 @@
 <script setup lang="ts">
 interface ITableColumn {
   id: number
-  prop: string
+  prop?: string
   label: string
   isSlot: boolean
-  slotName: string
+  slotName?: string
 }
 const props = defineProps({
   tableColumn: {
@@ -40,6 +41,10 @@ const props = defineProps({
   },
   tableData: {
     type: Array
+  },
+  loading: {
+    type: Boolean,
+    default: () => true
   }
 })
 interface User {
@@ -47,6 +52,8 @@ interface User {
   name: string
   address: string
 }
+console.log(props.loading)
+
 let multipleSelection = $ref<User[]>([])
 const handleSelectionChange = (val: User[]) => {
   multipleSelection = val

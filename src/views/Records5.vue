@@ -16,7 +16,7 @@
     </div>
     <!-- 头部end -->
     <!-- 表格start -->
-    <Table v-if="flag" :tableData="data.tableData" :tableColumn="data.tableColumn">
+    <Table :loading="data.loading" :tableData="data.tableData" :tableColumn="data.tableColumn">
       <template #img="val">
         <el-image
           lazy
@@ -56,6 +56,7 @@ const { isDrawer } = storeToRefs(useRecordStore())
 
 const IMAGE_URL = import.meta.env.VITE_IMAGE_URL
 let data: any = reactive({
+  loading: true,
   reviseData: {},
   tableColumn: [],
   tableData: [] as object[] | undefined
@@ -70,12 +71,12 @@ let query = reactive({
 data.tableColumn = useRecordData.tableColumn
 // 获取表格数据
 //#region
-let flag = $ref(false)
 const getTable = async () => {
+  data.loading = true
   let res = await useRecordData.getTable(query)
   data.tableData = res.tableData
   data.counts = res.counts
-  flag = true
+  data.loading = false
 }
 getTable()
 //#endregion
