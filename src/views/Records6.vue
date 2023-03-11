@@ -109,7 +109,7 @@ const dele = async (val: IDeleValType) => {
 // 修改
 const revise = (val: any) => {
   isDrawer.value = true //抽屉显示
-  data.reviseData = val
+  data.reviseData = JSON.parse(JSON.stringify(val))
   if (val.pictures === null && val.videos == null) {
     data.reviseData.pictures = []
     data.reviseData.videos = []

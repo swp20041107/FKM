@@ -62,6 +62,7 @@
           <el-input v-model="drawerForm.content" type="textarea" />
         </el-form-item>
 
+        <!-- logo图片 -->
         <el-form-item class="recordsDrawer_addLogo">
           <el-upload
             method="post"
@@ -69,6 +70,7 @@
             :limit="1"
             :on-success="logoSuccess"
             :on-exceed="logoExceed"
+            :on-remove="removeLogo"
             v-model:file-list="logoList"
             :action="UPLOAD_URL"
             list-type="picture-card"
@@ -120,6 +122,7 @@ let IMAGE_URL = import.meta.env.VITE_IMAGE_URL
 let headers = {
   Authorization: sessionStorage.getItem('token') || ''
 }
+
 // 表单数据
 let drawerForm: IAddRecordType = reactive({
   id: 0,
@@ -133,6 +136,7 @@ let drawerForm: IAddRecordType = reactive({
   videos: [] as Array<IObj>,
   pictures: []
 })
+
 watchEffect(() => {
   // 当抽屉关闭时就将数据恢复初始样子
   if (isDrawer.value === false) {
@@ -160,11 +164,28 @@ const logoSuccess: UploadProps['onSuccess'] = (e) => {
 const logoExceed: UploadProps['onExceed'] = (e) => {
   ElMessage.warning('最多只能上传一张图片')
 }
+const removeLogo: UploadProps['onRemove'] = (e) => {
+  logoList = logoList
+}
 //#endregion
+
 watchEffect(() => {
   // 如果有修改数据,就进行修改功能,否则就将id赋值为0进行添加功能
-  props.reviseData.id ? (drawerForm = props.reviseData as IAddRecordType) : false
+  if (props.reviseData.id) {
+    drawerForm = props.reviseData as IAddRecordType
+  }
+  // props.reviseData.id ? (drawerForm = props.reviseData as IAddRecordType) : false
 })
+onUpdated(() => {
+  if (props.reviseData.id) {
+    let obj = {
+      url: ''
+    }
+    obj.url = IMAGE_URL + props.reviseData.photo
+    logoList[0] = obj
+  }
+})
+
 //pictures上传图片
 //#region
 // pictures接口
@@ -221,7 +242,6 @@ const submitForm = async (formEl: FormInstance | undefined) => {
         emit('clearRevise', {}) //清空修改数据 必须写在清空表单后面
         fileList = [] //清空图片
         logoList = []
-        console.log('修改之后的表单', drawerForm)
       } else {
         ElMessage.error('添加失败')
       }
@@ -248,7 +268,6 @@ const handleClose = (done: () => void) => {
     })
 }
 //#endregion
-console.log('表单', drawerForm)
 </script>
 <style lang="scss" scoped>
 .recordsDrawer {
